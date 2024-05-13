@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { JwtModule } from '@nestjs/jwt';
 import { env } from 'process';
 import { UserModule } from './user/user.module';
+import { FeesModule } from './fees/fees.module';
+
 
 @Module({
-  imports: [UserModule, JwtModule.register({
+  imports: [UserModule, FeesModule, JwtModule.register({
     global: true,
     secret: process.env.JWT_SECRET,
   })],
