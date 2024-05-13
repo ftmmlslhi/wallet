@@ -7,11 +7,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model user {
-  Username  String? @db.VarChar(255)
-  LastName  String? @db.VarChar(255)
-  FirstName String? @db.VarChar(255)
+model account {
+  id             Int            @id @default(autoincrement())
+  account_number String         @db.VarChar(20)
+  balance        Decimal        @default(0.00) @db.Decimal(15, 2)
+  cvv            Int
+  iban           Int
+  opened_date    DateTime       @db.Date
+  created_at     DateTime       @default(now()) @db.DateTime(0)
+  transaction    transaction[]
+  user_account   user_account[]
+}
 
-  @@ignore
+model transaction {
+  id               Int                          @id @default(autoincrement())
+  transaction_type transaction_transaction_type
+  amount           Decimal                      @db.Decimal(15, 2)
+  account_id       Int
+  transaction_date DateTime                     @default(now()) @db.Timestamp(0)
+  account          account                      @relation(fields: [account_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "transaction_ibfk_1")
+
+  @@index([account_id], map: "account_id")
+}
+
+model user_account {
+  user_id    Int
+  account_id Int
+  users      users   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_account_ibfk_1")
+  account    account @relation(fields: [account_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_account_ibfk_2")
+
+  @@id([user_id, account_id])
+  @@index([account_id], map: "account_id")
+}
+
+model users {
+  lastName      String         @db.VarChar(255)
+  firstName     String         @db.VarChar(255)
+  mobile_number String         @db.VarChar(255)
+  id            Int            @id @default(autoincrement())
+  username      String         @unique(map: "username") @db.VarChar(50)
+  email         String         @unique(map: "email") @db.VarChar(100)
+  password      String         @db.VarChar(255)
+  created_at    DateTime?      @default(now()) @db.Timestamp(0)
+  updated_at    DateTime?      @default(now()) @db.Timestamp(0)
+  role          users_role     @default(user)
+  setting       setting?
+  user_account  user_account[]
+}
+
+model setting {
+  fee     Decimal @default(0) @db.Decimal(10, 0)
+  id      Int     @id @default(autoincrement())
+  user_id String  @db.VarChar(100)
+  users   users   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "setting_users_FK")
+}
+
+enum transaction_transaction_type {
+  withdrawal
+  deposit
+}
+
+enum users_role {
+  user
+  admin
 }
