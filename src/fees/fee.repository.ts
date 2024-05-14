@@ -10,15 +10,14 @@ export class FeeRepository {
   constructor(
     private readonly prisma: prismaService,
     private readonly jwtService: JwtService,
-  ) {}
-    async addFee(createFeeDto: CreateFeeDto) {
-    const data = createFeeDto
+  ) { }
+  async addFee(createFeeDto: CreateFeeDto) {
     try {
       const newSetting = await this.prisma.sett.create({
         data: {
           fee: createFeeDto.fee,
           users: {
-            connect: { id: createFeeDto.userId }, 
+            connect: { id: createFeeDto.userId },
           },
         },
       });
@@ -26,8 +25,23 @@ export class FeeRepository {
       return newSetting;
     } catch (error) {
       throw new Error(`Failed to create setting fee: ${error.message}`);
-}
+    }
 
-}
+  }
+  async getFee() {
+    try {
+      const getSetting = await this.prisma.sett.findFirst({
+        orderBy: {
+          id: 'desc'
+        },
+        take: 1,
+
+      });
+
+      return getSetting;
+    } catch (error) {
+      throw new Error(`Failed to create setting fee: ${error.message}`);
+    }
+  }
 
 }

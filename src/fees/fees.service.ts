@@ -12,6 +12,6 @@ export class FeesService {
   }
 
   getFee() {
-    return `This action returns a fee`;
+    return this.feeRepository.getFee()
   }
 }
