@@ -6,7 +6,8 @@ enum transaction_transaction_type {
 
 enum transaction_status {
     pending,
-    accept
+    accept,
+    reject
 }
 
 export class CreateTransactionDto {

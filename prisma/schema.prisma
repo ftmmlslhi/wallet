@@ -78,4 +78,5 @@ enum users_role {
 enum transaction_status {
   pending
   accept
+  reject
 }
