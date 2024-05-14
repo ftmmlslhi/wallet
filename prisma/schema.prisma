@@ -25,6 +25,7 @@ model transaction {
   amount           Decimal                      @db.Decimal(15, 2)
   account_id       Int
   transaction_date DateTime                     @default(now()) @db.Timestamp(0)
+  status           transaction_status           @default(pending)
   account          account                      @relation(fields: [account_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "transaction_ibfk_1")
 
   @@index([account_id], map: "account_id")
@@ -72,4 +73,9 @@ enum transaction_transaction_type {
 enum users_role {
   user
   admin
+}
+
+enum transaction_status {
+  pending
+  accept
 }

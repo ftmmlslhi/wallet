@@ -6,13 +6,14 @@ import { env } from 'process';
 import { UserModule } from './user/user.module';
 import { FeesModule } from './fees/fees.module';
 import { BankaccountModule } from './bankaccount/bankaccount.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 
 @Module({
   imports: [UserModule, FeesModule, JwtModule.register({
     global: true,
     secret: process.env.JWT_SECRET,
-  }), BankaccountModule],
+  }), BankaccountModule, TransactionModule],
   controllers: [AppController],
   providers: [AppService],
 })

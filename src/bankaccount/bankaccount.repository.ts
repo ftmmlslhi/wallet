@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { prismaService } from 'prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
 import { CreateBankaccountDto } from './dto/create-bankaccount.dto';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BankaccountRepository {
