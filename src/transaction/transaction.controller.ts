@@ -13,8 +13,8 @@ export class TransactionController {
     return this.transactionService.create(transactionCreateInput,dto);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {
+  @Put('/admin/:id')
+  update(@Param('id') id: string, @Body() updateTransactionDto: Prisma.transactionUpdateInput) {
     return this.transactionService.update(+id, updateTransactionDto);
   }
 

@@ -35,16 +35,22 @@ export class TransactionRepository {
   }
 
 
-  async findOne(id: number) {
+  async update(id: number, sectionUpdateInput: Prisma.transactionUpdateInput) {
     try {
-      const res = this.prisma.account.findUnique({
+      const res = await this.prisma.transaction.update({
+        data: {
+          status: sectionUpdateInput.status,
+        },
         where: {
           id,
-        }
+        },
       });
-      return res
+      return {
+        message: 'updated successfully',
+        data: res,
+      };
     } catch (error) {
-      console.error('Error findOne topic:', error);
+      console.error('Error updating section:', error);
       throw error;
     }
   }

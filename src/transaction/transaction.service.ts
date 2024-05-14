@@ -12,8 +12,8 @@ export class TransactionService {
     return this.transactionRepository.create(data,dto)
   }
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
+  update(id: number, sectionUpdateInput: Prisma.transactionUpdateInput) {
+    return this.transactionRepository.update(id, sectionUpdateInput)
   }
 
 }
