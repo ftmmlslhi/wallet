@@ -7,6 +7,7 @@ import { PrismaModule } from 'prisma/prisma.module';
 @Module({
   controllers: [InterestRateController],
   providers: [InterestRateService, InterestRateRepository],
-  imports: [PrismaModule]
+  imports: [PrismaModule],
+  exports: [InterestRateService]
 })
 export class InterestRateModule {}

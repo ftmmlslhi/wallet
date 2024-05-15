@@ -8,14 +8,22 @@ import { FeesModule } from './fees/fees.module';
 import { BankaccountModule } from './bankaccount/bankaccount.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { InterestRateModule } from './interest-rate/interest-rate.module';
-
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [UserModule, FeesModule, JwtModule.register({
-    global: true,
-    secret: process.env.JWT_SECRET,
-  }), BankaccountModule, TransactionModule, InterestRateModule],
+  imports: [
+    UserModule,
+    FeesModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+    }),
+    BankaccountModule,
+    TransactionModule,
+    InterestRateModule,
+    ScheduleModule.forRoot(),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

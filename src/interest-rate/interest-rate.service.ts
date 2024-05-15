@@ -14,6 +14,10 @@ export class InterestRateService {
     return this.interestRateRepository.getAllInterestRates();
   }
 
+  getInterestRateByDuration(durationDay : number) {
+    return this.interestRateRepository.getInterestRateByDuration(durationDay);
+  }
+
   deleteInterestRates(id: number) {
     return this.interestRateRepository.deleteInterestRates(id)
   }

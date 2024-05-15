@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { prismaService } from 'prisma/prisma.service';
 import { CreateBankaccountDto } from './dto/create-bankaccount.dto';
+import { account } from '@prisma/client';
 
 @Injectable()
 export class BankaccountRepository {
@@ -33,6 +34,13 @@ export class BankaccountRepository {
       throw new Error(`Failed to create bankaccount: ${e.message}`);
     }
   }
+
+  async getUserAccounts(): Promise<account[]> {
+    return this.prisma.account.findMany({
+      include: { user_account: true }
+    });
+  }
+
 
   async getBalance() {
     try {
@@ -77,8 +85,27 @@ export class BankaccountRepository {
       });
       return res;
     } catch (error) {
-      console.error('Error findOne topic:', error);
+      console.error('Error findOne account:', error);
       throw error;
     }
+  }
+
+  async updateAccountBalance(id:number,newBalance : number){
+      try{
+        const res = await this.prisma.account.update({
+          where:{
+            id:id,
+          },
+          data:{
+            balance:newBalance
+          }
+        })
+        console.log("update successfully");
+        return res
+      }
+      catch(e){
+        console.log(e)
+        throw e
+      }
   }
 }
