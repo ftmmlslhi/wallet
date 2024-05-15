@@ -5,11 +5,12 @@ import { BankaccountRepository } from './bankaccount.repository';
 import { PrismaModule } from 'prisma/prisma.module';
 import { DurationService } from './duration.service';
 import { InterestRateModule } from 'src/interest-rate/interest-rate.module';
-import { InterestRateService } from 'src/interest-rate/interest-rate.service';
+import { BalanceLogService } from 'src/balanceLog/balancelog.service';
+import { BalanceLogRepository } from 'src/balanceLog/balancelog.repository';
 
 @Module({
   controllers: [BankaccountController],
-  providers: [BankaccountService,BankaccountRepository,DurationService],
+  providers: [BankaccountService,BankaccountRepository,DurationService,BalanceLogService,BalanceLogRepository],
   imports: [PrismaModule,InterestRateModule]
 })
 export class BankaccountModule {}

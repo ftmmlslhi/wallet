@@ -8,15 +8,16 @@ datasource db {
 }
 
 model account {
-  id             Int            @id @default(autoincrement())
-  account_number String         @db.VarChar(20)
-  balance        Decimal        @default(0.00) @db.Decimal(15, 2)
-  cvv            Int
-  iban           Int
-  opened_date    DateTime       @db.Date
-  created_at     DateTime       @default(now()) @db.DateTime(0)
-  transaction    transaction[]
-  user_account   user_account[]
+  id                Int                 @id @default(autoincrement())
+  account_number    String              @db.VarChar(20)
+  balance           Decimal             @default(0.00) @db.Decimal(15, 2)
+  cvv               Int
+  iban              Int
+  opened_date       DateTime            @db.Date
+  created_at        DateTime            @default(now()) @db.DateTime(0)
+  NightlyBalanceLog NightlyBalanceLog[]
+  transaction       transaction[]
+  user_account      user_account[]
 }
 
 model transaction {
@@ -69,6 +70,16 @@ model interest_rate {
   id            Int     @id @default(autoincrement())
   duration_days Int
   rate          Decimal @db.Decimal(5, 2)
+}
+
+model NightlyBalanceLog {
+  id            Int      @id @default(autoincrement())
+  accountId     Int
+  loggedBalance Decimal  @db.Decimal(15, 2)
+  logDate       DateTime @default(now()) @db.Timestamp(0)
+  account       account  @relation(fields: [accountId], references: [id])
+
+  @@index([accountId], map: "NightlyBalanceLog_accountId_fkey")
 }
 
 enum transaction_transaction_type {

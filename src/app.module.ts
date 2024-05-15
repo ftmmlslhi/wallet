@@ -9,6 +9,7 @@ import { BankaccountModule } from './bankaccount/bankaccount.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { InterestRateModule } from './interest-rate/interest-rate.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { BalanceLogmodule } from './balanceLog/balancelog.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     BankaccountModule,
     TransactionModule,
     InterestRateModule,
+    BalanceLogmodule,
     ScheduleModule.forRoot(),
   ],
   controllers: [AppController],

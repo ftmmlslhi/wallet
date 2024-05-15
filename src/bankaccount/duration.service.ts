@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { BankaccountService } from './bankaccount.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InterestRateService } from 'src/interest-rate/interest-rate.service';
+import { BalanceLogService } from 'src/balanceLog/balancelog.service';
 
 @Injectable()
 export class DurationService {
-  constructor(private accountService: BankaccountService,private readonly interestrateService: InterestRateService) {}
+  constructor(private accountService: BankaccountService,private readonly interestrateService: InterestRateService, private readonly balanceLogService: BalanceLogService) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT) 
   async calculateAccountDurations(): Promise<void> {
@@ -22,6 +23,7 @@ export class DurationService {
         const interestAmount = (Number(account.balance) * Number(interestRate.rate)) / 100;
         const updatedBalance = Number(account.balance) + interestAmount;
         await this.accountService.updateAccountBalance(account.id, updatedBalance);
+        await this.balanceLogService.saveNightlyBalanceLog(account.id,updatedBalance)
       }
     }
   }

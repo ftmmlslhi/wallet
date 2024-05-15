@@ -18,6 +18,7 @@ CREATE TABLE `transaction` (
     `amount` DECIMAL(15, 2) NOT NULL,
     `account_id` INTEGER NOT NULL,
     `transaction_date` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `status` ENUM('pending', 'accept', 'reject') NOT NULL DEFAULT 'pending',
 
     INDEX `account_id`(`account_id`),
     PRIMARY KEY (`id`)
@@ -51,10 +52,30 @@ CREATE TABLE `users` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Setting` (
+CREATE TABLE `sett` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `fee` DECIMAL(15, 2) NOT NULL,
-    `userId` INTEGER NOT NULL,
+    `fee` DECIMAL(10, 0) NOT NULL,
+    `user_id` INTEGER NULL,
+
+    INDEX `user_id`(`user_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `interest_rate` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `duration_days` INTEGER NOT NULL,
+    `rate` DECIMAL(5, 2) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `NightlyBalanceLog` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `accountId` INTEGER NOT NULL,
+    `loggedBalance` DECIMAL(15, 2) NOT NULL,
+    `logDate` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -69,4 +90,7 @@ ALTER TABLE `user_account` ADD CONSTRAINT `user_account_ibfk_1` FOREIGN KEY (`us
 ALTER TABLE `user_account` ADD CONSTRAINT `user_account_ibfk_2` FOREIGN KEY (`account_id`) REFERENCES `account`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `Setting` ADD CONSTRAINT `Setting_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `sett` ADD CONSTRAINT `sett_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `NightlyBalanceLog` ADD CONSTRAINT `NightlyBalanceLog_accountId_fkey` FOREIGN KEY (`accountId`) REFERENCES `account`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
