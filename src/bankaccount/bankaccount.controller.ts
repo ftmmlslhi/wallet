@@ -1,17 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { BankaccountService } from './bankaccount.service';
 import { CreateBankaccountDto } from './dto/create-bankaccount.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 export interface idinterface {
-  id: number
+  id: number;
 }
 
 @UseGuards(AuthGuard)
@@ -25,14 +18,24 @@ export class BankaccountController {
   }
 
   @Get('/userbalance')
-  getBalance() {
-    return this.bankaccountService.getBalance();
+  getBalance(@Body() body: any) {
+    let userRole = body.Payload.role;
+    if (userRole === 'admin') {
+      return this.bankaccountService.getBalance();
+    } else {
+      return 'access denied!';
+    }
   }
 
   @Get('/balance')
-  getBalanceById(@Body() req: any) {
-    const id = req.accountId
+  getBalanceById(@Body() req: any, @Body() body: any) {
+    let userRole = body.Payload.role;
+    if (userRole === 'admin' || 'user') {
+    const id = req.accountId;
     return this.bankaccountService.getBalanceById(id);
+  } else {
+    return 'access denied!';
+  }
   }
 
   @Get('bankaccount/:id')
