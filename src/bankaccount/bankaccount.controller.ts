@@ -1,20 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { BankaccountService } from './bankaccount.service';
 import { CreateBankaccountDto } from './dto/create-bankaccount.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
+export interface idinterface {
+  id: number
+}
+
 @UseGuards(AuthGuard)
-@Controller('bankaccount')
+@Controller()
 export class BankaccountController {
   constructor(private readonly bankaccountService: BankaccountService) {}
 
-  @Post()
+  @Post('bankaccount')
   create(@Body() createBankaccountDto: CreateBankaccountDto) {
     return this.bankaccountService.create(createBankaccountDto);
   }
 
-  
-  @Get(':id')
+  @Get('/userbalance')
+  getBalance() {
+    return this.bankaccountService.getBalance();
+  }
+
+  @Get('/balance')
+  getBalanceById(@Body() req: any) {
+    const id = req.accountId
+    return this.bankaccountService.getBalanceById(id);
+  }
+
+  @Get('bankaccount/:id')
   findOne(@Param('id') id: string, @Body() body: any) {
     let userRole = body.Payload.role;
     if (userRole === 'admin' || 'user') {
