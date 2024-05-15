@@ -65,6 +65,12 @@ model sett {
   @@index([user_id], map: "user_id")
 }
 
+model interest_rate {
+  id            Int     @id @default(autoincrement())
+  duration_days Int
+  rate          Decimal @db.Decimal(5, 2)
+}
+
 enum transaction_transaction_type {
   withdrawal
   deposit
