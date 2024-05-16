@@ -56,12 +56,13 @@ export class BankaccountRepository {
       });
     } catch (e) {
       console.error('Error fin find balance', e);
-      throw e;
+      throw new Error('Database error occurred while creating balance.');
     }
   }
 
  async getBalanceById(id: number){
-    return await this.prisma.account.findUnique({
+    try{
+      const res = await this.prisma.account.findUnique({
       where: {
         id,
       },
@@ -74,6 +75,15 @@ export class BankaccountRepository {
         }
       }
     })
+    if (!res) {
+      throw new Error('user not found.');
+    }
+    return res
+  }
+    catch(e){
+      console.log(e);
+      throw new Error('Database error occurred while get balance.');
+    }
  }
 
   async findOne(id: number) {
@@ -86,7 +96,7 @@ export class BankaccountRepository {
       return res;
     } catch (error) {
       console.error('Error findOne account:', error);
-      throw error;
+      throw new Error('Database error occurred while get balance.');
     }
   }
 
@@ -105,7 +115,7 @@ export class BankaccountRepository {
       }
       catch(e){
         console.log(e)
-        throw e
+        throw new Error('Database error occurred while update balance.');
       }
   }
 }
