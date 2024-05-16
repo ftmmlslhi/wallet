@@ -12,7 +12,6 @@ export class BankaccountRepository {
       const res = await this.prisma.account.create({
         data: {
           account_number: createBankaccountDto.account_number,
-          balance: createBankaccountDto.balance,
           cvv: createBankaccountDto.cvv,
           iban: createBankaccountDto.iban,
           opened_date: new Date(),

@@ -26,7 +26,7 @@ export class BankaccountService {
   async getBalanceById(id: number) {
       const userbalance = await this.bankaccountRepository.getBalanceById(id);
       const res = {
-        balance: userbalance.balance,
+        t: userbalance.balance,
         userId: userbalance.user_account[0].user_id,
       };
       return res;

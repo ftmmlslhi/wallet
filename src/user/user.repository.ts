@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client';
 import { UserLoginDto } from './dto/login-user.dto';
 import { hash } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class UserRepository {
@@ -59,5 +60,27 @@ export class UserRepository {
       console.error('Error in login:', e);
       throw e;
     }
+  }
+
+  //TODO1
+  async updatebalance(id: number,amount:Decimal){
+    // try {
+    //   const res = await this.prisma.users.update({
+    //     where: {
+    //       user_account: {
+    //         some: {
+    //           user_id: id,
+    //         },
+    //       },
+    //     },
+    //     data: {
+    //       userBalance: amount,
+    //     },
+    //   });
+    //   return res;
+    // } catch (e) {
+    //   console.error('Error in login:', e);
+    //   throw e;
+    // }
   }
 }

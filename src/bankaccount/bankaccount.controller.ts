@@ -27,6 +27,8 @@ export class BankaccountController {
       return this.bankaccountService.findOne(+id);
   }
 
+
+  //TODO READ FROM USER TABLE
   @Get('/userbalance')
   @Roles(Role.Admin)
   @UseGuards(RolesGuard)

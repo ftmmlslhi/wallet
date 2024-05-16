@@ -6,10 +6,11 @@ import { env } from 'process';
 import { UserModule } from './user/user.module';
 import { FeesModule } from './fees/fees.module';
 import { BankaccountModule } from './bankaccount/bankaccount.module';
-import { TransactionModule } from './transaction/transaction.module';
+// import { TransactionModule } from './transaction/transaction.module';
 import { InterestRateModule } from './interest-rate/interest-rate.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BalanceLogmodule } from './balanceLog/balancelog.module';
+import { DepositModule } from './deposit/deposit.module';
 
 @Module({
   imports: [
@@ -20,10 +21,10 @@ import { BalanceLogmodule } from './balanceLog/balancelog.module';
       secret: process.env.JWT_SECRET,
     }),
     BankaccountModule,
-    TransactionModule,
     InterestRateModule,
     BalanceLogmodule,
     ScheduleModule.forRoot(),
+    DepositModule,
   ],
   controllers: [AppController],
   providers: [AppService],
