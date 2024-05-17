@@ -10,7 +10,6 @@ datasource db {
 model account {
   id                Int                 @id @default(autoincrement())
   account_number    String              @db.VarChar(20)
-  balance           Decimal             @default(0.00) @db.Decimal(15, 2)
   cvv               Int
   iban              Int
   opened_date       DateTime            @db.Date

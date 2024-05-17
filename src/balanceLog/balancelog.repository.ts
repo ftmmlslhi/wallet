@@ -13,7 +13,7 @@ import { prismaService } from "prisma/prisma.service";
                 loggedBalance,
               },
             });
-            console.log(res);
+            console.log(res,"gafdfh");
             return res;
             
           }

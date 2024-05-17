@@ -7,10 +7,12 @@ import { DurationService } from './duration.service';
 import { InterestRateModule } from 'src/interest-rate/interest-rate.module';
 import { BalanceLogService } from 'src/balanceLog/balancelog.service';
 import { BalanceLogRepository } from 'src/balanceLog/balancelog.repository';
+import { UserService } from 'src/user/user.service';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   controllers: [BankaccountController],
   providers: [BankaccountService,BankaccountRepository,DurationService,BalanceLogService,BalanceLogRepository],
-  imports: [PrismaModule,InterestRateModule]
+  imports: [PrismaModule,InterestRateModule,UserModule]
 })
 export class BankaccountModule {}

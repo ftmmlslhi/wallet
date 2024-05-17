@@ -28,19 +28,19 @@ export class BankaccountController {
   }
 
 
-  //TODO READ FROM USER TABLE
-  @Get('/userbalance')
-  @Roles(Role.Admin)
-  @UseGuards(RolesGuard)
-  getBalance() {
-      return this.bankaccountService.getBalance();
-  }
+  // //TODO READ FROM USER TABLE
+  // @Get('/userbalance')
+  // @Roles(Role.Admin)
+  // @UseGuards(RolesGuard)
+  // getBalance() {
+  //     return this.bankaccountService.getBalance();
+  // }
 
-  @Get('/balance')
-  @Roles(Role.Admin,Role.User)
-  getBalanceById(@Body() req: any) {
-    const id = req.accountId;
-    return this.bankaccountService.getBalanceById(id);
-  }
+  // @Get('/balance')
+  // @Roles(Role.Admin,Role.User)
+  // getBalanceById(@Body() req: any) {
+  //   const id = req.accountId;
+  //   return this.bankaccountService.getBalanceById(id);
+  // }
 
 }

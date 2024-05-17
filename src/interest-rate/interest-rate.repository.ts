@@ -21,7 +21,7 @@ export class InterestRateRepository{
         return await this.prisma.interest_rate.findMany({ });
     }
     
-    async getInterestRateByDuration(durationDay:number): Promise<interest_rate> {
+    async getInterestRateByDuration(durationDay:number): Promise<interest_rate> {        
         return await this.prisma.interest_rate.findFirst({
             where :{
                 duration_days : durationDay

@@ -2,27 +2,27 @@ import { Injectable } from '@nestjs/common';
 import { prismaService } from 'prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { FeeRepository } from 'src/fees/fee.repository';
-import { CreateDepositDto } from './dto/create-deposit.dto';
 import { UserRepository } from 'src/user/user.repository';
+import { CreateWithdrawalDto } from './dto/create-withdrawal.dto';
 
 @Injectable()
-export class DepositRepository {
+export class WithdrawalRepository {
   constructor(
     private readonly prisma: prismaService,
     private readonly feeRepository: FeeRepository,
     private readonly userRepository: UserRepository,
   ) {}
-  async create(dto: CreateDepositDto) {
-    try {
+  async create(createWithdrawalDto: CreateWithdrawalDto) {
+    try {      
       const getFee = await this.feeRepository.getFee();
-      const amountFee = Number(dto.deposit) - Number(getFee.fee);
+      const amountFee = Number(createWithdrawalDto.withdrawal) + Number(getFee.fee);      
       const res = await this.prisma.transaction.create({
         data: {
-          deposit: amountFee,
+          withdrawal: amountFee,
           transaction_date: new Date(),
-          deposit_status: 'submit',
+          withdrawal_status: 'submit',
           account: {
-            connect: { id: dto.accountId },
+            connect: { id: createWithdrawalDto.accountId },
           },
         },
       });
@@ -32,25 +32,27 @@ export class DepositRepository {
     }
   }
 
-  async update(TrId: number,transactionUpdateInput: Prisma.transactionUpdateInput,transactionType:string) {
+  async update(WdId: number,transactionUpdateInput: Prisma.transactionUpdateInput,transactionType:String) {
     try {
       const res = await this.prisma.transaction.update({
         data: {
-          deposit_status: transactionUpdateInput.deposit_status,
+          withdrawal_status: transactionUpdateInput.withdrawal_status,
         },
         where: {
-          id: TrId,
+          id: WdId,
         },
       });
-      if ((transactionUpdateInput.deposit_status === 'confirm')) {
-        const updatebalanceDEP = await this.userRepository.updatebalanceDEP(
+            
+      if ((transactionUpdateInput.withdrawal_status === 'approve')) {
+        //TODO swnd type of transaction to update function
+        const updateBalanceWID = await this.userRepository.updatebalanceWID(
           res.account_id,
-          res.deposit,
+          res.withdrawal,
           transactionType
         );
         return {
           message: 'updated successfully',
-          data: updatebalanceDEP,
+          data: updateBalanceWID,
         };
       }
         return {

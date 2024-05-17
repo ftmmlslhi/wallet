@@ -15,4 +15,27 @@ export class UserService {
     return this.userRepository.signin(userLoginDto)
   }
 
+  async getBalance() {
+    const accountsBalance = await this.userRepository.getBalance();  
+    const newaccountsBalance = accountsBalance.map((account) => ({
+      user_id: account.id,
+      userBalance: account.userBalance,
+    }));
+    return newaccountsBalance;
+  }
+
+  async getBalanceById(id: number) {
+    const userbalance = await this.userRepository.getBalanceById(id);
+    const res = {
+      userBalance: userbalance.userBalance,
+      userId: userbalance.id,
+    };
+    console.log("res",res);
+    
+    return res;
+}
+updateAccountBalance(id:number,newBalance : number){
+  return this.userRepository.updateAccountBalance(id,newBalance)
+}
+
 }

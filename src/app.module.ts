@@ -11,6 +11,7 @@ import { InterestRateModule } from './interest-rate/interest-rate.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BalanceLogmodule } from './balanceLog/balancelog.module';
 import { DepositModule } from './deposit/deposit.module';
+import { WithdrawalModule } from './withdrawal/withdrawal.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DepositModule } from './deposit/deposit.module';
     BalanceLogmodule,
     ScheduleModule.forRoot(),
     DepositModule,
+    WithdrawalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

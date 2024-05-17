@@ -34,56 +34,25 @@ export class BankaccountRepository {
     }
   }
 
-  async getUserAccounts(): Promise<account[]> {
-    return this.prisma.account.findMany({
-      include: { user_account: true }
-    });
-  }
-
-
-  async getBalance() {
-    try {
-      return await this.prisma.account.findMany({
-        select: {
-          user_account: {
-            select:{
-              user_id:true
-            }
-          },
-          balance: true,
-        },
-      });
-    } catch (e) {
-      console.error('Error fin find balance', e);
-      throw new Error('Database error occurred while creating balance.');
-    }
-  }
-
- async getBalanceById(id: number){
-    try{
-      const res = await this.prisma.account.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        balance:true,
-        user_account:{
-          select:{
-            user_id:true
-          }
+  async getUserAccounts(): Promise<any[]> {
+    const results = await this.prisma.account.findMany({
+      include: { user_account: {
+        select : {
+          user_id :true
         }
-      }
-    })
-    if (!res) {
-      throw new Error('user not found.');
-    }
-    return res
+      } }
+    });
+    const customRes = results.map((result)=>({
+      id: result.id,
+      iban: result.iban,
+      account_number: result.account_number,
+      cvv: result.cvv,
+      opened_date: result.opened_date,
+      created_at: result.created_at,
+      userId: result.user_account[0].user_id,
+    }))        
+    return customRes
   }
-    catch(e){
-      console.log(e);
-      throw new Error('Database error occurred while get balance.');
-    }
- }
 
   async findOne(id: number) {
     try {
@@ -99,22 +68,5 @@ export class BankaccountRepository {
     }
   }
 
-  async updateAccountBalance(id:number,newBalance : number){
-      try{
-        const res = await this.prisma.account.update({
-          where:{
-            id:id,
-          },
-          data:{
-            balance:newBalance
-          }
-        })
-        console.log("update successfully");
-        return res
-      }
-      catch(e){
-        console.log(e)
-        throw new Error('Database error occurred while update balance.');
-      }
-  }
+  
 }
